@@ -19,8 +19,8 @@ public class Hood {
     public void up() {
         hood.setPosition(0.95);
     }
-    public void down() {
-        hood.setPosition(0.1);
+    public void deployed() {
+        hood.setPosition(0.35);
     }
 
     public Command block(Gamepad gamepad) {
@@ -29,7 +29,7 @@ public class Hood {
                     if (gamepad.left_bumper){
                         this.up();
                     } else if (gamepad.right_bumper) {
-                        this.down();
+                        this.deployed();
                     }
                 }).requiring(this);
 

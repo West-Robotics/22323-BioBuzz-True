@@ -24,10 +24,11 @@ public class shoot4Leave extends OpMode {
 
         // 2. Initialize them here using hardwareMap
         bee = new DriveTrain(hardwareMap);
-        Ln = new Launcher(hardwareMap);
+        Ln = new Launcher(hardwareMap,telemetry);
         TbL = new Tollbooth(hardwareMap,true);
         TbR = new Tollbooth(hardwareMap,false);
         In = new Intake(hardwareMap);
+        Ln.pollen();
     }
 
     public Command waitS(double seconds) {
@@ -42,7 +43,7 @@ public class shoot4Leave extends OpMode {
                 bee.autoDrive(-0.4,0,0,0.75),
                 race(
                         sequential(
-                                waitS(1),
+                                waitS(0.1),
                                 parallel(
                                         TbL.autoHold(3,true),
                                         TbR.autoHold(3,false)
@@ -51,8 +52,9 @@ public class shoot4Leave extends OpMode {
                         Ln.autoLaunch(),
                         In.autoTake()
                 )
-                        .then( bee.autoDrive(0,0.4,0,0.9))
-                        .then(bee.autoDrive(-0.4,0,0,1.15))
+                        .then( bee.autoDrive(0,0.4,0,22
+                        ))
+                        .then(bee.autoDrive(-0.4,0,0,2.3))
         );
         schedule(autonomous);
     }

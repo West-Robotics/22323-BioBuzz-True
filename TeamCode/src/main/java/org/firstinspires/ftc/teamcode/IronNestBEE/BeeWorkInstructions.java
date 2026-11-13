@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.IronNestBEE;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
-import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.groups.Groups;
@@ -10,7 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "BetoWork", group = "TeleOp")
-@Configurable
 public class BeeWorkInstructions extends OpMode {
     private DriveTrain bee;
     private Launcher Ln;
@@ -25,7 +23,7 @@ public class BeeWorkInstructions extends OpMode {
 
         // 2. Initialize them here using hardwareMap
         bee = new DriveTrain(hardwareMap);
-        Ln = new Launcher(hardwareMap);
+        Ln = new Launcher(hardwareMap,telemetry);
         TbR = new Tollbooth(hardwareMap, false);
         TbL = new Tollbooth(hardwareMap,true);
         In = new Intake(hardwareMap);

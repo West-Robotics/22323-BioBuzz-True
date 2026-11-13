@@ -24,7 +24,7 @@ public class wait4Leave extends OpMode {
 
         // 2. Initialize them here using hardwareMap
         bee = new DriveTrain(hardwareMap);
-        Ln = new Launcher(hardwareMap);
+        Ln = new Launcher(hardwareMap,telemetry);
         TbL = new Tollbooth(hardwareMap,true);
         TbR = new Tollbooth(hardwareMap,false);
         In = new Intake(hardwareMap);
