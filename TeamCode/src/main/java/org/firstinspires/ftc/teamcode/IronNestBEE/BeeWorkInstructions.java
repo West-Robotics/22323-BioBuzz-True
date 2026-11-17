@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.IronNestBEE;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
+
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.groups.Groups;
@@ -20,7 +23,7 @@ public class BeeWorkInstructions extends OpMode {
     @Override
     public void init() {
         Scheduler.reset();
-
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         // 2. Initialize them here using hardwareMap
         bee = new DriveTrain(hardwareMap);
         Ln = new Launcher(hardwareMap,telemetry);

@@ -35,14 +35,27 @@ public class Launcher {
     /** Timer instance for timing-dependent launcher operations. */
     private Timer timer;
 
-    /** Static friction feedforward coefficient candidate for speed control. */
-    public static double kS = 0.1;
-
-    /** Voltage sensor used for main battery voltage compensation. */
-    private VoltageSensor batteryVoltage;
-
     /** Encoder counts per motor shaft revolution (28 ticks per revolution). */
     final double encoderCPM = 28;
+    public static double goalRPM = 4275;
+
+    /** Static friction feedforward coefficient kS (FTC Dashboard configurable). */
+    public static double kS = 0.067;
+
+    /** Velocity feedforward coefficient kV (FTC Dashboard configurable). */
+    public static double kV = 0.00017;
+
+    /** Proportional feedback gain kP for RPM error correction (FTC Dashboard configurable). */
+    public static double kP = 0.0015;
+
+    /** Flag enabling or disabling main battery voltage compensation (FTC Dashboard configurable). */
+    public static boolean voltageCompensationEnabled = true;
+
+    /** Reference battery voltage used as baseline for voltage compensation (FTC Dashboard configurable). */
+    public static double referenceBatteryVolts = 12.0;
+
+    /** Sensor measuring the current battery voltage of the robot. */
+    private VoltageSensor batteryVoltage;
 
     /**
      * Initializes all hardware components related to launching.
@@ -113,7 +126,39 @@ public class Launcher {
      * Placeholder method for implementing closed-loop PID velocity control.
      */
     public void spinWithPID() {
+        double error = goalRPM - this.getSpeed();
 
+        double feedback = error * kP;
+
+        double feedforward = (kS * Math.signum(goalRPM)) + (kV * goalRPM);
+
+        double power = feedback + feedforward;
+
+        double batteryVolts = batteryVoltage.getVoltage();
+
+        boolean voltageValid =
+                Double.isFinite(batteryVolts) && batteryVolts > 0.0;
+        boolean compensationActive =
+                voltageCompensationEnabled && voltageValid;
+
+        double requestedVolts = power * referenceBatteryVolts;
+
+        double requestedPower = power;
+
+        if (compensationActive) {
+            requestedPower = requestedVolts / batteryVolts;
+        }
+
+        double commandedPower = Range.clip(requestedPower, -1.0, 1.0);
+
+        this.spin(commandedPower);
+        telemetry.addData("Active kP", kP);
+        telemetry.addData("Target RPM", goalRPM);
+        telemetry.addData("Measured RPM", this.getSpeed());
+        telemetry.addData("Feedback", feedback);
+        telemetry.addData("Requested power", power);
+        telemetry.addData("Commanded power", commandedPower);
+        telemetry.update();
     }
 
     /**
@@ -140,7 +185,7 @@ public class Launcher {
         return Command.build()
                 .setExecute(() -> {
                     if (gamepad.right_trigger > .2 || gamepad.x) {
-                        this.spin();
+                        this.spinWithPID();
                     } else {
                         this.stop();
                     }
@@ -167,7 +212,7 @@ public class Launcher {
     public Command autoLaunch() {
         return Command.build()
                 .setExecute(() -> {
-                    this.spin();
+                    this.spinWithPID();
                     this.pollen();
                 })
                 .setEnd(endCondition -> this.stop())
