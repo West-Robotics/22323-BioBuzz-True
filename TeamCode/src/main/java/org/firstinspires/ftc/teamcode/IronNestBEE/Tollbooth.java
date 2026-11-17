@@ -45,7 +45,7 @@ public class Tollbooth {
                             timer.reset();
                             timerUsed = true;
                         }
-                        if(timer.seconds() >= 0.1 || gamepad.a) {
+                        if(timer.seconds() >= 0.2 || gamepad.a) {
                             this.open(inverse);
                         }
 //                        //Temporary until we can get timer working

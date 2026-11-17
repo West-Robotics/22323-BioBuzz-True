@@ -28,6 +28,7 @@ public class wait4Leave extends OpMode {
         TbL = new Tollbooth(hardwareMap,true);
         TbR = new Tollbooth(hardwareMap,false);
         In = new Intake(hardwareMap);
+        Ln.pollen();
     }
 
     public Command waitS(double seconds) {
@@ -52,7 +53,7 @@ public class wait4Leave extends OpMode {
                         Ln.autoLaunch(),
                         In.autoTake()
                 )
-                        .then( bee.autoDrive(0,-0.4,0,1))
+                        .then( bee.autoDrive(0,-0.4,0,1.5))
         );
         schedule(autonomous);
     }
