@@ -4,7 +4,6 @@ import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PwmControl;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 public class Hood {
@@ -16,8 +15,8 @@ public class Hood {
         hood.setPwmEnable();
         hood.setPwmRange(range);
     }
-    public void up() {
-        hood.setPosition(0.95);
+    public void retracted() {
+        hood.setPosition(0.87);
     }
     public void deployed() {
         hood.setPosition(0.35);
@@ -27,9 +26,11 @@ public class Hood {
         return Command.build()
                 .setExecute(() -> {
                     if (gamepad.left_bumper){
-                        this.up();
+                        this.retracted();
                     } else if (gamepad.right_bumper) {
                         this.deployed();
+                    }else{
+                        this.retracted();
                     }
                 }).requiring(this);
 

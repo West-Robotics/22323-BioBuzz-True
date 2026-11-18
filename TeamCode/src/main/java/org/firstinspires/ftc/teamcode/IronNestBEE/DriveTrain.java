@@ -79,6 +79,12 @@ public class DriveTrain {
                 })
                 .requiring(this);
     }
+    public Command waitS(double seconds) {
+        Timer timer = new Timer();
+        return Command.build()
+                .setStart(timer::reset)
+                .setDone(() -> timer.seconds() >= seconds);
+    }
     public Command autoDrive(double forward,double sideways,double turn,double time){
         timer = new Timer();
         return Command.build()
@@ -91,6 +97,7 @@ public class DriveTrain {
                 .setDone(()->timer.seconds() >= time)
                 .setEnd(endCondition -> {
                     this.stop();
+                    waitS(0.1);
                     timer.reset();
                 })
                 .requiring(this);
