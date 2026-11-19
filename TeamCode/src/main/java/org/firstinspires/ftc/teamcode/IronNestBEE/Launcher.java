@@ -37,7 +37,7 @@ public class Launcher {
 
     /** Encoder counts per motor shaft revolution (28 ticks per revolution). */
     final double encoderCPM = 28;
-    public static double goalRPM = 4275;
+    public static double goalRPM = 4286;
 
     /** Static friction feedforward coefficient kS (FTC Dashboard configurable). */
     public static double kS = 0.067;

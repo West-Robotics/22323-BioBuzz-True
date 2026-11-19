@@ -27,6 +27,7 @@ public class shoot4Leave extends OpMode {
         TbL = new Tollbooth(hardwareMap,true);
         TbR = new Tollbooth(hardwareMap,false);
         In = new Intake(hardwareMap);
+        doomAndDespair.stowCommand();
     }
 
     public Command waitS(double seconds) {
@@ -40,28 +41,35 @@ public class shoot4Leave extends OpMode {
         final Command autonomous = sequential(
                 race(
                         sequential(
-                                waitS(1),
+                                waitS(1.5),
                                 parallel(
-                                        TbL.autoHold(6,true),
-                                        TbR.autoHold(6,false)
+                                        TbL.autoHold(3,true),
+                                        TbR.autoHold(3,false)
+                                ),
+                                waitS(4),
+                                parallel(
+                                        TbL.autoHold(4,true),
+                                        TbR.autoHold(4,false)
                                 )
                         ),
                         Ln.autoLaunch(),
-                        doomAndDespair.block(gamepad1),
+                        doomAndDespair.retractCommand(),
                         sequential(
-                                waitS(4),
-                                In.autoTake()
+                                waitS(5),
+                                In.autoTake(3),
+                                waitS(5)
                         )
                 )
+                        .then(waitS(6))
                         .then( bee.autoDrive(-0.4,0,0,0.4
                         ))
                         .then(bee.autoDrive(0,0,-0.4, 0.4
                         ))
                         .then( bee.autoDrive(-0.4,0,0,2
                         ))
-                        .then( bee.autoDrive(0,0,0.4,0.4
+                        .then( bee.autoDrive(0,0,0.4,0.36
                         ))
-                        .then( bee.autoDrive(-0.4,0,0,2
+                        .then( bee.autoDrive(-0.4,0,0,1
                         ))
                         .then(bee.Stop())
         );

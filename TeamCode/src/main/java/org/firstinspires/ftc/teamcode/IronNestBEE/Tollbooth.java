@@ -39,7 +39,7 @@ public class Tollbooth {
         timer = new Timer();
         return Command.build()
                 .setExecute(()->{
-                    if(gamepad.a || gamepad.right_trigger>.2){
+                    if(gamepad.a || gamepad.x){
 
                         if(!timerUsed){
                             timer.reset();

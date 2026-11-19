@@ -9,6 +9,7 @@ public class FlowerThingy {
     private final Servo swivel;
     public FlowerThingy(HardwareMap hardwareMap){
         swivel = hardwareMap.get(Servo.class, "hockeyL");
+        this.up();
     }
     public void up(){
         swivel.setPosition(0.55);
@@ -26,5 +27,10 @@ public class FlowerThingy {
                     }
 
                 }).requiring(this);
+    }
+    public Command upCommand() {
+        return Command.build()
+                .setExecute(this::up)
+                .requiring(this);
     }
 }

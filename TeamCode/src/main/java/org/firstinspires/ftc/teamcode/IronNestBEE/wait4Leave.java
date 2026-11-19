@@ -51,7 +51,7 @@ public class wait4Leave extends OpMode {
                                 )
                         ),
                         Ln.autoLaunch(),
-                        In.autoTake()
+                        In.autoTake(4)
                 )
                         .then( bee.autoDrive(0,-0.4,0,1.5))
         );

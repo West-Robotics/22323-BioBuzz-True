@@ -34,7 +34,7 @@ public void setSpeed(double speed){
 public Command IntakeIt(Gamepad gamepad){
     return Command.build()
             .setExecute(()->{
-                if(gamepad.left_trigger>.2 || gamepad.right_trigger>.2){
+                if(gamepad.x || gamepad.left_trigger>.2){
                     this.spin();
                 }else{
                     if(gamepad.dpad_left){
@@ -45,9 +45,12 @@ public Command IntakeIt(Gamepad gamepad){
             }).requiring(this);
 }
 
-    public Command autoTake(){
+    public Command autoTake(double seconds){
+        timer = new Timer();
         return Command.build()
+                .setStart(()->{timer.reset();})
                 .setExecute(this::spin)
+                .setDone(()->timer.seconds() >= seconds)
                 .setEnd(endCondition -> this.stop())
                 .requiring(this);
     }
