@@ -18,32 +18,32 @@ public class Hood {
         hoodState = 0;
     }
     public void stowed() { hood.setPosition(0.95); }
-    public void retracted() {
+    public void launchOffset() {
         hood.setPosition(0.87);
     }
     public void deployed() {
         hood.setPosition(0.35);
     }
 
-    public Command block(Gamepad gamepad) {
+    public Command block(Gamepad gamepad, Gamepad secondaryGamepad) {
         return Command.build()
                 .setExecute(() -> {
-                    if ((gamepad.x || gamepad.right_trigger > 0.2) && hoodState != 2){
-                        this.retracted();
+                    if ((gamepad.x || gamepad.a || secondaryGamepad.right_trigger > 0.2) && hoodState != 2){
+                        this.launchOffset();
                         hoodState = 1;
-                    } else if (gamepad.left_bumper || hoodState == 1){
+                    } else if (gamepad.left_bumper || secondaryGamepad.a || hoodState == 1){
                         this.stowed();
                         hoodState = 0;
-                    } else if (gamepad.right_bumper) {
+                    } else if (gamepad.right_bumper || secondaryGamepad.x) {
                         this.deployed();
                         hoodState = 2;
                     }
                 }).requiring(this);
 
     }
-    public Command retractCommand() {
+    public Command launchOffsetCommand() {
         return Command.build()
-                .setExecute(this::retracted)
+                .setExecute(this::launchOffset)
                 .requiring(this);
     }
     public Command stowCommand() {

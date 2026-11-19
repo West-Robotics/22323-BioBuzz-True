@@ -72,21 +72,7 @@ public class Launcher {
         this.telemetry = telemetry;
     }
 
-    /**
-     * Spins the flywheel using battery voltage compensation based on nominal baseline reference voltage (12.5V).
-     * <p>
-     * Calculates required motor power to maintain constant output voltage relative to battery state,
-     * falling back to fixed reference power if battery voltage reading is invalid.
-     * <p>
-     * TODO:
-     * Find out the most consistent battery level and
-     * power applied and change referencePower and
-     * reference battery volts to match.
-     * Also, get the following information:
-     * The motor model, gearbox ratio if any, any external gearing;
-     * The battery Voltage of successful shots;
-     * The velocity of the flywheel at those successful shots.
-     */
+
     public void spin() {
         double power = 0.87;
         double referencePower = 0.87;
@@ -161,16 +147,10 @@ public class Launcher {
         telemetry.update();
     }
 
-    /**
-     * Stops the flywheel motor by setting power to 0.
-     */
     public void stop() {
         Flywheel.setPower(0);
     }
 
-    /**
-     * Sets the launch adjustment servo to the pollen scoring position preset (0.95).
-     */
     public void pollen() {
         LaunchAdjust.setPosition(0.95);
     }
@@ -181,10 +161,10 @@ public class Launcher {
      * @param gamepad Gamepad instance supplying driver input (triggers and dpad).
      * @return Command executing launch and position adjustment based on gamepad inputs.
      */
-    public Command Launch(Gamepad gamepad) {
+    public Command Launch(Gamepad gamepad, Gamepad secondaryGamepad) {
         return Command.build()
                 .setExecute(() -> {
-                    if (gamepad.right_trigger > .2 || gamepad.x) {
+                    if (gamepad.a || gamepad.x || gamepad.right_trigger>0.2 || secondaryGamepad.right_trigger>0.2) {
                         this.spinWithPID();
                     } else {
                         this.stop();

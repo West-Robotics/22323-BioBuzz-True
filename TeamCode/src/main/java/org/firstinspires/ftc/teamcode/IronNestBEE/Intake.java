@@ -31,13 +31,13 @@ public double getSpeed(){
 public void setSpeed(double speed){
     Intake.setVelocity(speed);
 }
-public Command IntakeIt(Gamepad gamepad){
+public Command IntakeIt(Gamepad gamepad, Gamepad secondaryGamepad){
     return Command.build()
             .setExecute(()->{
-                if(gamepad.x || gamepad.left_trigger>.2){
+                if(gamepad.x || gamepad.left_trigger>.2 || secondaryGamepad.left_trigger>.2){
                     this.spin();
                 }else{
-                    if(gamepad.dpad_left){
+                    if(gamepad.dpad_left || secondaryGamepad.left_bumper){
                         this.spinBack();
                     }
                     this.stop();

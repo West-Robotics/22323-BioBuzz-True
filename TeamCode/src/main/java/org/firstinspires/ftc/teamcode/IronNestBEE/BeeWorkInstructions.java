@@ -43,12 +43,12 @@ public class BeeWorkInstructions extends OpMode {
         schedule(
                 Groups.loop(
                         bee.Drive(gamepad1)
-                                .with(Ln.Launch(gamepad1))
-                                .with(TbR.Hold(gamepad1,false))
-                                .with(TbL.Hold(gamepad1,true))
-                                .with(In.IntakeIt(gamepad1))
-                                .with(FT.upDown(gamepad1))
-                                .with(doomAndDespair.block(gamepad1))
+                                .with(Ln.Launch(gamepad1, gamepad2))
+                                .with(TbR.Hold(gamepad1,gamepad2,false))
+                                .with(TbL.Hold(gamepad1,gamepad2,true))
+                                .with(In.IntakeIt(gamepad1, gamepad2))
+                                .with(FT.upDown(gamepad1, gamepad2))
+                                .with(doomAndDespair.block(gamepad1, gamepad2))
                 )
         );
     }

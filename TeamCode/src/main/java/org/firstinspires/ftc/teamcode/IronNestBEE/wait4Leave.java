@@ -51,10 +51,10 @@ public class wait4Leave extends OpMode {
                                 )
                         ),
                         Ln.autoLaunch(),
-                        doomAndDespair.retractCommand(),
+                        doomAndDespair.launchOffsetCommand(),
                         sequential(
-                                waitS(2),
-                                In.autoTake(3.5),
+                                waitS(3.5),
+                                In.autoTake(2),
                                 waitS(1)
                         )
                 ))

@@ -35,21 +35,19 @@ public class Tollbooth {
             servo.setPosition(0.25);
         }
     }
-    public Command Hold(Gamepad gamepad, boolean inverse){
+    public Command Hold(Gamepad gamepad, Gamepad secondaryGamepad, boolean inverse){
         timer = new Timer();
         return Command.build()
                 .setExecute(()->{
-                    if(gamepad.a || gamepad.x){
+                    if(gamepad.right_trigger>0.2 || gamepad.x){
 
                         if(!timerUsed){
                             timer.reset();
                             timerUsed = true;
                         }
-                        if(timer.seconds() >= 0.2 || gamepad.a) {
+                        if(timer.seconds() >= 0.3 || secondaryGamepad.right_trigger>0.2 || gamepad.a) {
                             this.open(inverse);
                         }
-//                        //Temporary until we can get timer working
-//                        this.open(inverse);
                     }else{
                         this.close(inverse);
                         timerUsed = false;

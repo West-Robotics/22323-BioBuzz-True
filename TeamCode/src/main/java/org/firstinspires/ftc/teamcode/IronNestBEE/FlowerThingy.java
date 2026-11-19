@@ -17,12 +17,12 @@ public class FlowerThingy {
     public void down(){
         swivel.setPosition(0);
     }
-    public Command upDown(Gamepad gamepad){
+    public Command upDown(Gamepad gamepad, Gamepad secondaryGamepad){
         return Command.build()
                 .setExecute(()->{
-                    if(gamepad.y){
+                    if(gamepad.y || secondaryGamepad.y){
                         this.up();
-                    } else if (gamepad.b) {
+                    } else if (gamepad.b || secondaryGamepad.b) {
                         this.down();
                     }
 

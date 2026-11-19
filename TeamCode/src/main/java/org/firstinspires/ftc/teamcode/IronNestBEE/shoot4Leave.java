@@ -53,7 +53,7 @@ public class shoot4Leave extends OpMode {
                                 )
                         ),
                         Ln.autoLaunch(),
-                        doomAndDespair.retractCommand(),
+                        doomAndDespair.launchOffsetCommand(),
                         sequential(
                                 waitS(5),
                                 In.autoTake(3),

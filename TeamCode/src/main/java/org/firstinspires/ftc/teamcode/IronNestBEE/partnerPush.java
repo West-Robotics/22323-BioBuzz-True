@@ -35,7 +35,7 @@ public class partnerPush extends OpMode {
     @Override
     public void start(){
         final Command autonomous = sequential(
-             bee.autoDrive(-0.7,0,0, 1)
+             bee.autoDrive(-1,0,0, 1)
         );
         schedule(autonomous);
     }
