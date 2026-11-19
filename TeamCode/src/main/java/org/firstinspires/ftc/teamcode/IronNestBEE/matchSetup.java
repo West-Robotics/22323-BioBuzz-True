@@ -7,7 +7,9 @@ import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.utils.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+@Disabled
 @Autonomous(name= "matchSetup", group = "Autonomous")
 public class matchSetup extends OpMode {
     private DriveTrain bee;

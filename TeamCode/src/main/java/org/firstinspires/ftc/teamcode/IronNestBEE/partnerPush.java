@@ -1,17 +1,13 @@
 package org.firstinspires.ftc.teamcode.IronNestBEE;
 import static com.pedropathing.ivy.Scheduler.schedule;
-import static com.pedropathing.ivy.commands.Commands.*;
-import static com.pedropathing.ivy.groups.Groups.parallel;
-import static com.pedropathing.ivy.groups.Groups.race;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import com.pedropathing.ivy.Command;
-import com.pedropathing.ivy.CommandBuilder;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.utils.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-@Autonomous(name="Push", group = "Autonomous")
-public class Push extends OpMode {
+@Autonomous(name="partnerPush", group = "Autonomous")
+public class partnerPush extends OpMode {
     private DriveTrain bee;
     private Launcher Ln;
     private Tollbooth TbL;
