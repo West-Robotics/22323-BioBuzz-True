@@ -37,12 +37,12 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionPortal.CameraState;
+import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagSingleDetection;
 
 import java.util.List;
-import java.util.Locale;
 
 /*
  * This OpMode illustrates the basics of AprilTag recognition and pose estimation, using
@@ -83,27 +83,25 @@ public class ConceptAprilTagSwitchableCameras extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
+        while (opModeIsActive()) {
 
-                telemetryCameraSwitching();
-                telemetryAprilTag();
+            telemetryCameraSwitching();
+            telemetryAprilTag();
 
-                // Push telemetry to the Driver Station.
-                telemetry.update();
+            // Push telemetry to the Driver Station.
+            telemetry.update();
 
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
-
-                doCameraSwitching();
-
-                // Share the CPU.
-                sleep(20);
+            // Save CPU resources; can resume streaming when needed.
+            if (gamepad1.dpad_down) {
+                visionPortal.stopStreaming();
+            } else if (gamepad1.dpad_up) {
+                visionPortal.resumeStreaming();
             }
+
+            doCameraSwitching();
+
+            // Share the CPU.
+            sleep(20);
         }
 
         // Save more CPU resources when camera is no longer needed.
@@ -157,16 +155,25 @@ public class ConceptAprilTagSwitchableCameras extends LinearOpMode {
 
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
-            if (detection instanceof AprilTagSingleDetection singleDetection) {
-                if (singleDetection.metadata != null) {
-                    telemetry.addLine(String.format(Locale.US, "\n==== (ID %d) %s", singleDetection.id, singleDetection.metadata.name));
-                    telemetry.addLine(String.format(Locale.US, "XYZ %6.1f %6.1f %6.1f  (inch)", singleDetection.ftcPose.x, singleDetection.ftcPose.y, singleDetection.ftcPose.z));
-                    telemetry.addLine(String.format(Locale.US, "PRY %6.1f %6.1f %6.1f  (deg)", singleDetection.ftcPose.pitch, singleDetection.ftcPose.roll, singleDetection.ftcPose.yaw));
-                    telemetry.addLine(String.format(Locale.US, "RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", singleDetection.ftcPose.range, singleDetection.ftcPose.bearing, singleDetection.ftcPose.elevation));
+            if (detection instanceof AprilTagSingleDetection) {
+                AprilTagSingleDetection singleDet = (AprilTagSingleDetection) detection;
+
+                if (singleDet.metadata != null) {
+                    telemetry.addLine(String.format("\n==== (ID %d) %s", singleDet.id, singleDet.metadata.name));
+                    telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                    telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                    telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
                 } else {
-                    telemetry.addLine(String.format(Locale.US, "\n==== (ID %d) Unknown", singleDetection.id));
-                    telemetry.addLine(String.format(Locale.US, "Center %6.0f %6.0f   (pixels)", singleDetection.center.x, singleDetection.center.y));
+                    telemetry.addLine(String.format("\n==== (ID %d) Unknown", singleDet.id));
+                    telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", singleDet.center.x, singleDet.center.y));
                 }
+            }  else {
+                AprilTagClusterDetection clusterDet = (AprilTagClusterDetection) detection;
+                telemetry.addLine(String.format("\n==== Tag Cluster (%s)", clusterDet.metadata.name));
+                telemetry.addLine(String.format("Percent tags found: %d", clusterDet.percentClusterFound));
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
             }
         }   // end for() loop
 
