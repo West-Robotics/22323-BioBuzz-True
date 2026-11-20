@@ -15,7 +15,7 @@ public class BeePrototype extends OpMode {
         // Schedule the default drive command to run in a loop
         schedule(
                 Groups.loop(
-                       beeLaunch.Launch(gamepad1, gamepad2)
+                       beeLaunch.Launch(gamepad1, gamepad2, 4290)
                 ));
     }
 

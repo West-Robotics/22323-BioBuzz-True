@@ -43,7 +43,7 @@ public class BeeWorkInstructions extends OpMode {
         schedule(
                 Groups.loop(
                         bee.Drive(gamepad1)
-                                .with(Ln.Launch(gamepad1, gamepad2))
+                                .with(Ln.Launch(gamepad1, gamepad2, 4300))
                                 .with(TbR.Hold(gamepad1,gamepad2,false))
                                 .with(TbL.Hold(gamepad1,gamepad2,true))
                                 .with(In.IntakeIt(gamepad1, gamepad2))

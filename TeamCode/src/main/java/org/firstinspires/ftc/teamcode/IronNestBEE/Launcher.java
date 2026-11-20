@@ -37,7 +37,6 @@ public class Launcher {
 
     /** Encoder counts per motor shaft revolution (28 ticks per revolution). */
     final double encoderCPM = 28;
-    public static double goalRPM = 4286;
 
     /** Static friction feedforward coefficient kS (FTC Dashboard configurable). */
     public static double kS = 0.067;
@@ -46,7 +45,7 @@ public class Launcher {
     public static double kV = 0.00017;
 
     /** Proportional feedback gain kP for RPM error correction (FTC Dashboard configurable). */
-    public static double kP = 0.0015;
+    public static double kP = 0.0016;
 
     /** Flag enabling or disabling main battery voltage compensation (FTC Dashboard configurable). */
     public static boolean voltageCompensationEnabled = true;
@@ -111,7 +110,7 @@ public class Launcher {
     /**
      * Placeholder method for implementing closed-loop PID velocity control.
      */
-    public void spinWithPID() {
+    public void spinWithPID(double goalRPM) {
         double error = goalRPM - this.getSpeed();
 
         double feedback = error * kP;
@@ -161,11 +160,11 @@ public class Launcher {
      * @param gamepad Gamepad instance supplying driver input (triggers and dpad).
      * @return Command executing launch and position adjustment based on gamepad inputs.
      */
-    public Command Launch(Gamepad gamepad, Gamepad secondaryGamepad) {
+    public Command Launch(Gamepad gamepad, Gamepad secondaryGamepad, double rpm) {
         return Command.build()
                 .setExecute(() -> {
                     if (gamepad.a || gamepad.x || gamepad.right_trigger>0.2 || secondaryGamepad.right_trigger>0.2) {
-                        this.spinWithPID();
+                        this.spinWithPID(rpm);
                     } else {
                         this.stop();
                     }
@@ -189,10 +188,10 @@ public class Launcher {
      *
      * @return Command that spins up the flywheel and sets launch angle to pollen position.
      */
-    public Command autoLaunch() {
+    public Command autoLaunch(double rpm) {
         return Command.build()
                 .setExecute(() -> {
-                    this.spinWithPID();
+                    this.spinWithPID(rpm);
                     this.pollen();
                 })
                 .setEnd(endCondition -> this.stop())

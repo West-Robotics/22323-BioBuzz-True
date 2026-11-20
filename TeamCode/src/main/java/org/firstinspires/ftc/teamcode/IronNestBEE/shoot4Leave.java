@@ -52,7 +52,7 @@ public class shoot4Leave extends OpMode {
                                         TbR.autoHold(4,false)
                                 )
                         ),
-                        Ln.autoLaunch(),
+                        Ln.autoLaunch(4290),
                         doomAndDespair.launchOffsetCommand(),
                         sequential(
                                 waitS(5),

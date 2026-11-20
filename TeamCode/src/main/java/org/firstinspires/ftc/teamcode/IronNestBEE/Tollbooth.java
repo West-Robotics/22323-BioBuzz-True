@@ -13,6 +13,8 @@ public class Tollbooth {
     private Timer timer;
     private boolean timerUsed;
 
+    private Launcher Ln;
+
     public Tollbooth(HardwareMap hardwareMap, boolean inverse){
         if(inverse) {
             servo = hardwareMap.get(Servo.class, "tollBoothL");
@@ -45,9 +47,10 @@ public class Tollbooth {
                             timer.reset();
                             timerUsed = true;
                         }
-                        if(timer.seconds() >= 0.3 || secondaryGamepad.right_trigger>0.2 || gamepad.a) {
+                        if(timer.seconds() >= 0.6 || secondaryGamepad.right_trigger>0.2 || gamepad.a) {
                             this.open(inverse);
                         }
+
                     }else{
                         this.close(inverse);
                         timerUsed = false;

@@ -28,7 +28,7 @@ public class Hood {
     public Command block(Gamepad gamepad, Gamepad secondaryGamepad) {
         return Command.build()
                 .setExecute(() -> {
-                    if ((gamepad.x || gamepad.a || secondaryGamepad.right_trigger > 0.2) && hoodState != 2){
+                    if ((gamepad.x || gamepad.a || secondaryGamepad.right_trigger > 0.2 || gamepad.right_trigger > 0.2) && hoodState != 2){
                         this.launchOffset();
                         hoodState = 1;
                     } else if (gamepad.left_bumper || secondaryGamepad.a || hoodState == 1){
