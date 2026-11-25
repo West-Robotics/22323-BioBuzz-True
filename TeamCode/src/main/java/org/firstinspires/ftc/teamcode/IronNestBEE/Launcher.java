@@ -56,6 +56,8 @@ public class Launcher {
     /** Sensor measuring the current battery voltage of the robot. */
     private VoltageSensor batteryVoltage;
 
+    public double launchAdjustState = 0;
+
     /**
      * Initializes all hardware components related to launching.
      *
@@ -160,25 +162,32 @@ public class Launcher {
      * @param gamepad Gamepad instance supplying driver input (triggers and dpad).
      * @return Command executing launch and position adjustment based on gamepad inputs.
      */
-    public Command Launch(Gamepad gamepad, Gamepad secondaryGamepad, double rpm) {
+    public Command Launch(Gamepad gamepad, Gamepad secondaryGamepad, double pollenRPM, double nectarRPM) {
         return Command.build()
                 .setExecute(() -> {
                     if (gamepad.a || gamepad.x || gamepad.right_trigger>0.2 || secondaryGamepad.right_trigger>0.2) {
-                        this.spinWithPID(rpm);
+                        if(launchAdjustState == 0){
+                            this.spinWithPID(pollenRPM);
+                        } else if(launchAdjustState == 1){
+                            this.spinWithPID(nectarRPM);
+                        }
                     } else {
                         this.stop();
                     }
-                    if (gamepad.dpad_down) {
+                    if (gamepad.dpad_down || secondaryGamepad.dpad_down) {
                         // pollen position
                         LaunchAdjust.setPosition(0.95);
+                        launchAdjustState = 0;
                     }
-                    if (gamepad.dpad_up) {
+                    if (gamepad.dpad_up || secondaryGamepad.dpad_up) {
                         // nectar position
-                        LaunchAdjust.setPosition(0.49);
+                        LaunchAdjust.setPosition(0.5);
+                        launchAdjustState = 1;
                     }
-                    if (gamepad.dpad_right) {
+                    if (gamepad.dpad_right || secondaryGamepad.dpad_right) {
                         // receiving position
                         LaunchAdjust.setPosition(0.22);
+                        launchAdjustState = 2;
                     }
                 }).requiring(this);
     }
@@ -196,6 +205,32 @@ public class Launcher {
                 })
                 .setEnd(endCondition -> this.stop())
                 .requiring(this);
+    }
+
+    public Command SimpleLaunch(Gamepad gamepad, Gamepad secondaryGamepad, double power){
+        return Command.build()
+                .setExecute(() -> {
+                            if (gamepad.a || gamepad.x || gamepad.right_trigger>0.2 || secondaryGamepad.right_trigger>0.2) {
+                                this.spin(1);
+                            } else {
+                                this.stop();
+                            }
+                            if (gamepad.dpad_down) {
+                                // pollen position
+                                LaunchAdjust.setPosition(0.95);
+                                launchAdjustState = 0;
+                            }
+                            if (gamepad.dpad_up) {
+                                // nectar position
+                                LaunchAdjust.setPosition(0.49);
+                                launchAdjustState = 1;
+                            }
+                            if (gamepad.dpad_right) {
+                                // receiving position
+                                LaunchAdjust.setPosition(0.22);
+                                launchAdjustState = 2;
+                            }
+                }).requiring(this);
     }
 
     /**

@@ -50,7 +50,7 @@ public class wait4Leave extends OpMode {
                                         TbR.autoHold(5,false)
                                 )
                         ),
-                        Ln.autoLaunch(4290),
+                        Ln.autoLaunch(3400),
                         doomAndDespair.launchOffsetCommand(),
                         sequential(
                                 waitS(3.5),

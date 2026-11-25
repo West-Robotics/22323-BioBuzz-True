@@ -7,13 +7,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import javax.tools.Tool;
-
 public class Tollbooth {
     private final Servo servo;
     private Timer timer;
     private boolean timerUsed;
 
-    private Launcher Ln;
+    private double launchAdjustState = 0;
 
     public Tollbooth(HardwareMap hardwareMap, boolean inverse){
         if(inverse) {
@@ -41,13 +40,26 @@ public class Tollbooth {
         timer = new Timer();
         return Command.build()
                 .setExecute(()->{
+                    if (gamepad.dpad_down || secondaryGamepad.dpad_down) {
+                        // pollen position
+                        launchAdjustState = 0;
+                    }
+                    if (gamepad.dpad_up || secondaryGamepad.dpad_up) {
+                        // nectar position
+                        launchAdjustState = 1;
+                    }
+                    if (gamepad.dpad_right || secondaryGamepad.dpad_right) {
+                        // receiving position
+                        launchAdjustState = 2;
+                    }
                     if(gamepad.right_trigger>0.2 || gamepad.x){
 
                         if(!timerUsed){
                             timer.reset();
                             timerUsed = true;
                         }
-                        if(timer.seconds() >= 0.6 || secondaryGamepad.right_trigger>0.2 || gamepad.a) {
+                        // Wait a certain amount of time depending on what we're firing, unless we're already spun up
+                        if((launchAdjustState == 1 && timer.seconds() >= 1.5) || (launchAdjustState == 0 && timer.seconds() >= 0.8) || launchAdjustState == 2 || secondaryGamepad.right_trigger>0.2 || gamepad.a) {
                             this.open(inverse);
                         }
 

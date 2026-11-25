@@ -4,10 +4,8 @@ import static com.pedropathing.ivy.Scheduler.schedule;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.groups.Groups;
-import com.pedropathing.utils.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -18,7 +16,7 @@ public class BeeWorkInstructions extends OpMode {
     private Intake In;
     private Tollbooth TbR;
     private Tollbooth TbL;
-    private FlowerThingy FT;
+    private FlowerRetriever FT;
     private Hood doomAndDespair;
     @Override
     public void init() {
@@ -30,7 +28,7 @@ public class BeeWorkInstructions extends OpMode {
         TbR = new Tollbooth(hardwareMap, false);
         TbL = new Tollbooth(hardwareMap,true);
         In = new Intake(hardwareMap);
-        FT = new FlowerThingy(hardwareMap);
+        FT = new FlowerRetriever(hardwareMap);
         doomAndDespair = new Hood(hardwareMap);
     }
 
@@ -43,7 +41,7 @@ public class BeeWorkInstructions extends OpMode {
         schedule(
                 Groups.loop(
                         bee.Drive(gamepad1)
-                                .with(Ln.Launch(gamepad1, gamepad2, 4300))
+                                .with(Ln.Launch(gamepad1, gamepad2, 3400,4420))
                                 .with(TbR.Hold(gamepad1,gamepad2,false))
                                 .with(TbL.Hold(gamepad1,gamepad2,true))
                                 .with(In.IntakeIt(gamepad1, gamepad2))

@@ -56,10 +56,6 @@ public class DriveTrain {
         BR.setPower(backRightPower);
     }
 
-
-    /**
-     * Stops all drive motors.
-     */
     public void stop() {
         drive(0, 0, 0);
     }

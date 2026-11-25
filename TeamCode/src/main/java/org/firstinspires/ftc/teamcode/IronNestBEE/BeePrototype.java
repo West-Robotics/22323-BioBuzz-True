@@ -1,22 +1,54 @@
 package org.firstinspires.ftc.teamcode.IronNestBEE;
+
 import static com.pedropathing.ivy.Scheduler.schedule;
+
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.groups.Groups;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-@Disabled
-@TeleOp(name = "Betotype", group = "TeleOp")
+
+@TeleOp(name = "BetoType [NOT FOR MATCH USE]", group = "TeleOp")
 public class BeePrototype extends OpMode {
+    private DriveTrain bee;
+    private Launcher Ln;
+    private Intake In;
+    private Tollbooth TbR;
+    private Tollbooth TbL;
+    private FlowerRetriever FT;
+    private Hood doomAndDespair;
     @Override
     public void init() {
         Scheduler.reset();
-        Launcher beeLaunch = new Launcher(hardwareMap,telemetry);
-        // Schedule the default drive command to run in a loop
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        // 2. Initialize them here using hardwareMap
+        bee = new DriveTrain(hardwareMap);
+        Ln = new Launcher(hardwareMap,telemetry);
+        TbR = new Tollbooth(hardwareMap, false);
+        TbL = new Tollbooth(hardwareMap,true);
+        In = new Intake(hardwareMap);
+        FT = new FlowerRetriever(hardwareMap);
+        doomAndDespair = new Hood(hardwareMap);
+    }
+
+    @Override
+    public void start() {
+        FT.up();
+        TbR.close(false);
+        TbL.close(true);
+        Ln.pollen();
         schedule(
                 Groups.loop(
-                       beeLaunch.Launch(gamepad1, gamepad2, 4290)
-                ));
+                        bee.Drive(gamepad1)
+                                .with(Ln.SimpleLaunch(gamepad1, gamepad2, 1))
+                                .with(TbR.Hold(gamepad1,gamepad2,false))
+                                .with(TbL.Hold(gamepad1,gamepad2,true))
+                                .with(In.IntakeIt(gamepad1, gamepad2))
+                                .with(FT.upDown(gamepad1, gamepad2))
+                                .with(doomAndDespair.block(gamepad1, gamepad2))
+                )
+        );
     }
 
     @Override

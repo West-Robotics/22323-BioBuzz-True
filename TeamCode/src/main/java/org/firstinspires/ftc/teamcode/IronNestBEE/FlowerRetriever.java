@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class FlowerThingy {
+public class FlowerRetriever {
     private final Servo swivel;
-    public FlowerThingy(HardwareMap hardwareMap){
+    public FlowerRetriever(HardwareMap hardwareMap){
         swivel = hardwareMap.get(Servo.class, "hockeyL");
         this.up();
     }

@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.IronNestBEE;
 import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.groups.Groups.parallel;
-import static com.pedropathing.ivy.groups.Groups.race;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
-import com.pedropathing.utils.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -18,7 +16,7 @@ public class matchSetup extends OpMode {
     private Tollbooth TbR;
     private Intake In;
     private Hood doomAndDespair;
-    private FlowerThingy FT;
+    private FlowerRetriever FT;
 
     @Override
     public void init() {
@@ -30,7 +28,7 @@ public class matchSetup extends OpMode {
         TbL = new Tollbooth(hardwareMap,true);
         TbR = new Tollbooth(hardwareMap,false);
         In = new Intake(hardwareMap);
-        FT = new FlowerThingy(hardwareMap);
+        FT = new FlowerRetriever(hardwareMap);
     }
 
 
